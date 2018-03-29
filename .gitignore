@@ -103,5 +103,4 @@ ENV/
 RUNS/
 
 Kitti_VGG.ckpt.*
-runs/
 checkpoint
