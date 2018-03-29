@@ -10,6 +10,7 @@ import tensorflow as tf
 from glob import glob
 from urllib.request import urlretrieve
 from tqdm import tqdm
+import cv2
 
 
 class DLProgress(tqdm):
@@ -58,11 +59,12 @@ def maybe_download_pretrained_vgg(data_dir):
         os.remove(os.path.join(vgg_path, vgg_filename))
 
 
-def gen_batch_function(data_folder, image_shape):
+def gen_batch_function(data_folder, image_shape, brightness = False):
     """
     Generate function to create batches of training data
     :param data_folder: Path to folder that contains all the datasets
     :param image_shape: Tuple - Shape of image
+    :param brightness: If True the batch is composed with half of the images with random brightness
     :return:
     """
     def get_batches_fn(batch_size):
@@ -78,6 +80,9 @@ def gen_batch_function(data_folder, image_shape):
         background_color = np.array([255, 0, 0])
 
         random.shuffle(image_paths)
+        if brightness:
+            # The batch size is shrink by half if brightness
+            batch_size = batch_size // 2
         for batch_i in range(0, len(image_paths), batch_size):
             images = []
             gt_images = []
@@ -94,6 +99,17 @@ def gen_batch_function(data_folder, image_shape):
                 images.append(image)
                 gt_images.append(gt_image)
 
+                if brightness:
+                    # TODO: Change image colorspace to HSV
+                    hsv_image = cv2.cvtColor(image, cv2.COLOR_RGB2HSV)
+                    # TODO: Generate random brightness modifier
+                    br = np.random.random_integers(low=-20, high=20)
+                    # TODO: Modify the brightness of the image
+                    hsv_image[:,:,2] = cv2.add(hsv_image[:,:,2], int(br))
+
+                    images.append(hsv_image)
+                    gt_images.append(gt_image)
+                    
             yield np.array(images), np.array(gt_images)
     return get_batches_fn
 
