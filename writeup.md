@@ -24,7 +24,7 @@ Due to hardware capacity the current model has been run in an EC2 instance. Conc
 
 Three cases have been implemented, and in two of them **data augmentation has been applied**. The way data augmentation works is quite simple, and it is only necessary to modify `gen_batch_function` in `helper.py`:
 
-```
+```python
 def gen_batch_function(data_folder, image_shape, brightness = False):
     """
     Generate function to create batches of training data
@@ -101,3 +101,7 @@ The performance of the model is evaluated for two images with different light co
 According to both images, the data augmentation technique as well as increasing the batch size improves the true positive rate (TPR) of road pixels. It is clear that in poor light conditions the model is having some issues to segment the road. In these cases it might be good to try another data augmentation technique so that the images with nice light conditions become more similar to the images dark road segments.
 
 The images in the `runs` folder correspond to the model with brightness TRUE & batch size 64.
+
+**WARNING:** Using the AMI from Amazon requires to install the following libraries (that are currently not included) to import OpenCV
+* libstdc++.so.6
+* libgomp.so.1
