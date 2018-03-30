@@ -1,11 +1,10 @@
 # A project about Semantic segmentation
 
-[image1]: img/c_um_000024.png "Case A clear road"
-[image2]: img/c_um_000093.png "Case A shady road"
-[image3]: img/b_um_000024.png "Case B clear road"
-[image4]: img/b_um_000093.png "Case B shady road"
-[image5]: img/a_um_000024.png "Case C clear road"
-[image6]: img/a_um_000093.png "Case C shady road"
+[image1]: img/NB_uu_000001.png "Case A without brightness"
+[image2]: img/YB_uu_000001.png "Case A with brightness"
+[image3]: img/NB_um_000067.png "Case B without brightness"
+[image4]: img/YB_um_000067.png "Case B with brighness"
+
 Semantic segmentation enhances the performance of self-driving cars by narrowing down the area through which they can drive by. Fully convolutional networks (FCN) are the models that have the best perfomance to do this kind of task, and the difference among other classfication networks is that the output is an image.
 
 In this project, the VGG-16 model is modified so that the fully connected layers are replaced by transposed convolutional layers.
@@ -85,22 +84,27 @@ This function implements random brightness to an image if `brightness = True`. I
 
 The performance of the model is evaluated for two images with different light conditions:
 
+**Update [2018-03-30]**: To improve the classification of pixels several parameters values have been changed:
+
+* Batch size = 4
+* Number of epochs = 30
+* Learning rate = 0.00001
+
 | Model parameters      	|     Segmentation	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| brightness FALSE & batch size 32		| ![alt text][image1]			| 
-| brightness TRUE & batch size 32		| ![alt text][image3]			| 
-| brightness TRUE & batch size 64		| ![alt text][image5]			| 
+| brightness FALSE		| ![alt text][image1]			| 
+| brightness TRUE		| ![alt text][image2]			| 
 
 
 | Model parameters      	|     Segmentation	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| brightness FALSE & batch size 32		| ![alt text][image2]			| 
-| brightness TRUE & batch size 32		| ![alt text][image4]			| 
-| brightness TRUE & batch size 64		| ![alt text][image6]			| 
+| brightness FALSE		| ![alt text][image3]			| 
+| brightness TRUE	| ![alt text][image4]			| 
 
-According to both images, the data augmentation technique as well as increasing the batch size improves the true positive rate (TPR) of road pixels. It is clear that in poor light conditions the model is having some issues to segment the road. In these cases it might be good to try another data augmentation technique so that the images with nice light conditions become more similar to the images dark road segments.
 
-The images in the `runs` folder correspond to the model with brightness TRUE & batch size 64.
+Overall, the data augmentation technique improves the true positive rate (TPR) of road pixels. It is clear that in poor light conditions the model is having some issues to segment the road. In these cases it might be good to try another data augmentation technique so that the images with nice light conditions become more similar to the images dark road segments.
+
+The images in the `runs` folder correspond to the model with brightness TRUE & batch size 4.
 
 **WARNING:** Using the AMI from Amazon requires to install the following libraries (that are currently not included) to import OpenCV
 * libstdc++.so.6
