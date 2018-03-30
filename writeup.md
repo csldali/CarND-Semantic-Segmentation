@@ -2,8 +2,8 @@
 
 [image1]: img/NB_uu_000001.png "Case A without brightness"
 [image2]: img/YB_uu_000001.png "Case A with brightness"
-[image3]: img/NB_um_000067.png "Case B without brightness"
-[image4]: img/YB_um_000067.png "Case B with brighness"
+[image3]: img/NB_umm_000091.png "Case B without brightness"
+[image4]: img/YB_umm_000091.png "Case B with brighness"
 
 Semantic segmentation enhances the performance of self-driving cars by narrowing down the area through which they can drive by. Fully convolutional networks (FCN) are the models that have the best perfomance to do this kind of task, and the difference among other classfication networks is that the output is an image.
 
@@ -15,7 +15,7 @@ This is a perfect example of *transfer learning* in which we use a pretrained mo
  * `optimize` where the model is set up. The loss function, the learning rate and so on.
  * `train_nn` trains the model.
  
-The parameters are self-explanatory. `keep_prob` and `learning_rate` have been set to 0.5 and 0.0005 respectively. The number of epochs has not been changed.
+The parameters are self-explanatory. `keep_prob` and `learning_rate` have been set to 0.7 and 0.0001 respectively. The number of epochs has not been changed.
 
 Due to hardware capacity the current model has been run in an EC2 instance. Concretely running with the [deep Learning AMI](https://aws.amazon.com/marketplace/pp/B077GF11NF). For that reason it has been possible to feed 64 images in every batch.
 
@@ -88,7 +88,7 @@ The performance of the model is evaluated for two images with different light co
 
 * Batch size = 4
 * Number of epochs = 30
-* Learning rate = 0.00001
+* Learning rate = 0.0001
 
 | Model parameters      	|     Segmentation	        					| 
 |:---------------------:|:---------------------------------------------:| 
@@ -102,7 +102,7 @@ The performance of the model is evaluated for two images with different light co
 | brightness TRUE	| ![alt text][image4]			| 
 
 
-Overall, the data augmentation technique improves the true positive rate (TPR) of road pixels. It is clear that in poor light conditions the model is having some issues to segment the road. In these cases it might be good to try another data augmentation technique so that the images with nice light conditions become more similar to the images dark road segments.
+Overall, the data augmentation technique improves the true positive rate (TPR) of road pixels in images with poor light conditions. In images with good light conditions, data augmentation (random brightness actually) may produce worse segmentation results. But according to the images above these differences are insignificant.
 
 The images in the `runs` folder correspond to the model with brightness TRUE & batch size 4.
 
