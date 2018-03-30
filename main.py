@@ -119,7 +119,7 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
     for epoch in range(epochs):
         print("Running epoch %d:" % epoch)
         for features, label in tqdm(get_batches_fn(batch_size)):
-            _, loss = sess.run([train_op, cross_entropy_loss], feed_dict={input_image: features, correct_label:label, keep_prob:0.5, learning_rate:0.0005})
+            _, loss = sess.run([train_op, cross_entropy_loss], feed_dict={input_image: features, correct_label:label, keep_prob:0.5, learning_rate:0.00001})
         print("Training loss: %.3f" % loss)
             
 tests.test_train_nn(train_nn)
@@ -128,8 +128,8 @@ tests.test_train_nn(train_nn)
 def run():
     num_classes = 2
     image_shape = (160, 576)
-    batch_size = 32
-    epochs = 10
+    batch_size = 4
+    epochs = 30
 
     data_dir = './data'
     runs_dir = './runs'
